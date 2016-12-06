@@ -6,6 +6,8 @@
 package View;
 
 import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 /**
  *
  * @author bbsuser
@@ -26,12 +28,26 @@ public class View
         
     }
     
+    private void AddComponentsToPane(Container pane)
+    {
+        JButton button = new JButton();
+        pane.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        
+    }
+    
     public void ResetEingabe()
     {
         
     }
     
     public void DeleteLastCharacter()
+    {
+        
+    }
+    
+    public void ButtonClick()
     {
         
     }
