@@ -19,6 +19,7 @@ public class Taschenrechner {
      */
     public static void main(String[] args) {
         fController = new Controller();
+        fController.showView();
     }
     
 }

@@ -7,8 +7,17 @@ package Model;
 
 /**
  *
- * @author bbsuser
+ * @author Joshua Herzog
  */
-public class Model {
-    
+public class Model 
+{
+   public double Berechne(String fstr)
+   {
+     return 0;  
+   }
+   
+   public void ClearAll()
+   {
+       
+   }
 }
