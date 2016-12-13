@@ -7,6 +7,7 @@ package Model;
 
 /**
  *
+ * 
  * @author Jan M. Groß, Joshua Herzog, Hendrik Neumannm
  */
 public class Model 
