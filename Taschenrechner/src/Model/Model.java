@@ -5,6 +5,7 @@
  */
 package Model;
 
+import java.util.*;
 /**
  *
  * 
@@ -14,23 +15,33 @@ public class Model
 {
     public double Berechne(String astr)
     {
+       ArrayList<String> rechnungs_teile = new ArrayList<String>();
        double ergebnis;
        String zwischen_string_zahlen = "";
        String zwischen_string_rechenzeichen = "";
        int counter_rechenzeichen = 0;
        ergebnis = 2.2;
+       int i = 0;
         // Durchlaufe den String Zeichen fuer Zeichen
-        for (int i = 0; i < astr.length(); i++){
+        for ( ; i < astr.length(); i++){
             char zeichen = astr.charAt(i);
             //verarbeite Zeichen
-            if (zeichen == ',' || zeichen >= '0' && zeichen <= '9'){
-                zwischen_string_zahlen += zeichen;
+            String teil = "";
+            if ((zeichen == ',') || (zeichen >= '0' && zeichen <= '9')){
+                if(counter_rechenzeichen <= 0){
+                    zwischen_string_zahlen += zeichen;
+                    teil += zeichen;
+                }else{
+                    break;
+                }
             }else{
                 zwischen_string_rechenzeichen += zeichen;
                 counter_rechenzeichen++;
             }
             
         }
+        
+        
 
         return ergebnis;
     }
