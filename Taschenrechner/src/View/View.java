@@ -22,45 +22,14 @@ public class View extends JFrame
     private JTextField txtErgebnis = new JTextField(5);
     private JButton btnClearall = new JButton("Clear All");
     private JButton btnBack = new JButton("Back");*/
-    
-    public View()
-    {
-        
-        InitForm();
-    }
-    
-    private void InitForm()
-    {
-        this.setSize(200, 300);
+        GridLayout glCalc = new GridLayout(3, 1);
         GridLayout glTextField = new GridLayout(2, 1);
-        GridLayout glButtonsLeft = new GridLayout(6, 2);
-        GridLayout glButtonTopRight = new GridLayout(1, 1);
-        GridLayout glButtonsMiddleRight = new GridLayout(3, 2);
-        GridLayout glButtonsBottomMiddle = new GridLayout(2, 1);
-        GridLayout glButtonBottomRight = new GridLayout(1, 1);
+        GridLayout glMidButtons = new GridLayout(2, 5);
+        GridLayout glBotButtons = new GridLayout(4, 3);
         
-        JPanel pnlTop = new JPanel();
-        pnlTop.setLayout(glTextField);
-        pnlTop.setBounds(0, 0, 180, 80);
-        pnlTop.add(new JTextField());
-        pnlTop.add(new JTextField());
-        
-        JLayeredPane pnlBottom = new JLayeredPane();
-        pnlBottom.setBounds(new Rectangle(0, 300));
-        JPanel pnlLeft = new JPanel(glButtonsLeft);
-        JPanel pnlRight = new JPanel();
-        pnlRight.setSize(100, 264);
-        pnlLeft.setSize(100, 264);
-        pnlBottom.add(pnlLeft);
-        pnlBottom.add(pnlRight);
-        JPanel pnlTopRight = new JPanel(glButtonTopRight);
-        JPanel pnlMiddleRight = new JPanel(glButtonsMiddleRight);
-        JPanel pnlBottomMiddle = new JPanel(glButtonsBottomMiddle);
-        JPanel pnlBottomRight = new JPanel(glButtonBottomRight);
-        pnlRight.add(pnlTopRight);
-        pnlRight.add(pnlMiddleRight);
-        pnlRight.add(pnlBottomMiddle);
-        pnlRight.add(pnlBottomRight);
+        JPanel pnlTop = new JPanel(glTextField);
+        JPanel pnlMidButtons = new JPanel(glMidButtons);
+        JPanel pnlBotButtons = new JPanel(glBotButtons);
         
         JButton button0 = new JButton();
         JButton button1 = new JButton();
@@ -84,34 +53,105 @@ public class View extends JFrame
         JButton buttonBackspace = new JButton();
         JButton buttonClearAll = new JButton();
         JButton buttonEquals = new JButton();
+    
+    public View()
+    {
         
-        pnlLeft.add(button0);
-        pnlLeft.add(button1);
-        pnlLeft.add(button2);
-        pnlLeft.add(button4);
-        pnlLeft.add(button5);
-        pnlLeft.add(button7);
-        pnlLeft.add(button8);
-        pnlLeft.add(buttonMultiply);
-        pnlLeft.add(buttonDivide);
-        pnlLeft.add(buttonSubtract);
-        pnlLeft.add(buttonAdd);
-        pnlLeft.add(buttonInvert);
-        
-        pnlBottom.add(pnlLeft, new Integer(1), 0);
-        pnlBottom.add(pnlTopRight, new Integer(1), 0);
-        pnlBottom.add(pnlMiddleRight, new Integer(1), 0);
-        pnlBottom.add(pnlBottomMiddle, new Integer(1), 0);
-        pnlBottom.add(pnlBottomRight, new Integer(1), 0);
-        
-        this.add(pnlTop);
-        this.add(pnlBottom);
-        pnlBottom.setVisible(true);
+        InitForm();
     }
     
-    private void AddComponentsToPane(Container pane)
+    private void InitForm()
     {
-                
+        this.setSize(450, 600);
+        pnlTop.add(new JTextField());
+        pnlTop.add(new JTextField());   
+        
+        InitializeButtons();
+        PlaceButtonsOnPanels();
+        
+        
+        this.setLayout(glCalc);
+        this.add(pnlTop);
+        this.add(pnlMidButtons);
+        this.add(pnlBotButtons);
+        pnlTop.setVisible(true);
+        pnlMidButtons.setVisible(true);
+        pnlBotButtons.setVisible(true);
+        this.setVisible(true);
+    }
+    
+    private void PlaceButtonsOnPanels()
+    {
+        pnlMidButtons.add(buttonCosinus);
+        pnlMidButtons.add(buttonSinus);
+        pnlMidButtons.add(buttonClearAll);
+        pnlMidButtons.add(buttonMultiply);
+        pnlMidButtons.add(buttonDivide);
+        pnlMidButtons.add(buttonAdd);
+        pnlMidButtons.add(buttonSubtract);
+        pnlMidButtons.add(buttonBackspace);
+        pnlMidButtons.add(buttonTangens);
+        pnlMidButtons.add(buttonEquals);
+        pnlBotButtons.add(button7);
+        pnlBotButtons.add(button8);
+        pnlBotButtons.add(button9);
+        pnlBotButtons.add(button4);
+        pnlBotButtons.add(button5);
+        pnlBotButtons.add(button6);
+        pnlBotButtons.add(button1);
+        pnlBotButtons.add(button2);
+        pnlBotButtons.add(button3);
+        pnlBotButtons.add(buttonInvert);
+        pnlBotButtons.add(button0);
+        pnlBotButtons.add(buttonPoint);
+    }
+    
+    private void InitializeButtons()
+    {
+        button0.setText("0");
+        button0.setSize(40, 40);    
+        button1.setText("1");
+        button1.setSize(40, 40);    
+        button2.setText("2");
+        button2.setSize(40, 40);    
+        button3.setText("3");
+        button3.setSize(40, 40);    
+        button4.setText("4");
+        button4.setSize(40, 40);    
+        button5.setText("5");
+        button5.setSize(40, 40);    
+        button6.setText("6");
+        button6.setSize(40, 40);    
+        button7.setText("7");
+        button7.setSize(40, 40);    
+        button8.setText("8");
+        button8.setSize(40, 40);    
+        button9.setText("9");
+        button9.setSize(40, 40);    
+        buttonAdd.setText("+");
+        buttonAdd.setSize(40, 40);    
+        buttonSubtract.setText("-");
+        buttonSubtract.setSize(40, 40);    
+        buttonMultiply.setText("*");
+        buttonMultiply.setSize(40, 40);    
+        buttonDivide.setText("/");
+        buttonDivide.setSize(40, 40);    
+        buttonSinus.setText("sin");
+        buttonSinus.setSize(40, 40);    
+        buttonCosinus.setText("cos");
+        buttonCosinus.setSize(40, 40);    
+        buttonTangens.setText("tan");
+        buttonTangens.setSize(40, 40);    
+        buttonInvert.setText("+-");
+        buttonInvert.setSize(40, 40);    
+        buttonPoint.setText(".");
+        buttonPoint.setSize(40, 40);    
+        buttonBackspace.setText("<-");
+        buttonBackspace.setSize(80, 40);    
+        buttonClearAll.setText("Clear All");
+        buttonClearAll.setSize(40, 40);    
+        buttonEquals.setText("=");
+        buttonEquals.setSize(40, 80);        
     }
     
     public void ResetEingabe()
