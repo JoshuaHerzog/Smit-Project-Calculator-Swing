@@ -10,19 +10,24 @@ import java.util.*;
  *
  * 
  * @author Jan M. Groß, Joshua Herzog, Hendrik Neumannm
+ * The Data Layer.
  */
 public class Model 
 {
     public String Berechne(String astr) {
     String str = astr;
+    //Create anonymus Class with a temporary object instance.
     return Double.toString(new Object() {
         int pos = -1, ch;
 
+        /*on the first Call it set the char pointer to the end of the calcstring 
+        and then the other calls it count down to the begin of the string*/
         void nextChar() {
             ch = (++pos < str.length()) ? str.charAt(pos) : -1;
         }
 
-        //Diese funktion hat hunger
+        //This function has appetite
+        //Nom Nom Nom
         boolean eat(int charToEat) {
             while (ch == ' ') nextChar();
             if (ch == charToEat) {
@@ -32,6 +37,7 @@ public class Model
             return false;
         }
 
+        //Parse the Calculation and return the result
         double parse() {
             nextChar();
             double x = parseExpression();
@@ -45,7 +51,9 @@ public class Model
         // factor = `+` factor | `-` factor | `(` expression `)`
         //        | number | functionName factor | factor `^` factor
 
+        //calculate the expressions with +and-
         double parseExpression() {
+            //Before do that calculate *and/
             double x = parseTerm();
             for (;;) {
                 if      (eat('+')) x += parseTerm(); // addition
@@ -54,7 +62,9 @@ public class Model
             }
         }
 
+        //calculate the expressions with *and/
         double parseTerm() {
+            //Before do that calculate extra expression calc like cos,sin,tan....  
             double x = parseFactor();
             for (;;) {
                 if      (eat('*')) x *= parseFactor(); // multiplication
@@ -63,6 +73,7 @@ public class Model
             }
         }
 
+        //calculate the expressions with sin,cos,tan,sqrt,power,()....
         double parseFactor() {
             if (eat('+')) return parseFactor(); // unary plus
             if (eat('-')) return -parseFactor(); // unary minus
@@ -92,11 +103,12 @@ public class Model
 
             return x;
         }
-    }.parse());
+    }.parse()); //Call Parse to Calculate the string.
 }
    
+   //Nothing to see here.
    public void ClearAll()
    {
-       
+   //empty    
    }
 }

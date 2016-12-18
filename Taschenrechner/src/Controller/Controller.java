@@ -15,12 +15,15 @@ import View.*;
 /**
  *
  * @author Joshua Herzog
+ * 
+ * Update the View, and represets the Program Logic
  */
 public class Controller 
 {
    private Model fModel;
    private View fView;
    
+   //Constructor Create new Model and View and set the actionlisteners
    public Controller()
    {
        this.fModel = new Model();
@@ -42,13 +45,15 @@ public class Controller
      this.fView.setResetListener(new ResetListener());
    }
    
+   //Listener Classes, overwrite the Actionlistener.actionPerformed methods wich call now the view and model methotds.
    class BerechnenListener implements ActionListener
    {
        @Override
        public void actionPerformed(ActionEvent aE)
        {
            String lEingabe = fView.getEingabe();
-           fView.SetErgebnis(String.valueOf(fModel.Berechne(lEingabe)));
+           if (!lEingabe.isEmpty())
+             fView.SetErgebnis(String.valueOf(fModel.Berechne(lEingabe)));
        }      
    }
    

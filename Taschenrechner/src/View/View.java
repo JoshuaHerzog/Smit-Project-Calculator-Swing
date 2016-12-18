@@ -15,7 +15,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 /**
  *
- * @author bbsuser
+ * @author Maximilian Frerichs, Joshua Herzog
+ * 
+ * The View have 
  */
 public class View extends JFrame
 { 
@@ -60,11 +62,13 @@ public class View extends JFrame
         JButton buttonParenthesisOpen = new JButton();
         JButton buttonParenthesisClosed = new JButton();
     
+    //Constructor
     public View()
     {   
         InitForm();
     }
     
+    //Initialisation Method/build the form with gridlayout
     private void InitForm()
     {
         this.setSize(450, 600);
@@ -152,26 +156,22 @@ public class View extends JFrame
       String leingabe = tfInput.getText();
       if (!leingabe.isEmpty())
       {
-        char llastchar = leingabe.charAt(leingabe.length()-1);   
         Pattern lp = Pattern.compile("\\d$"); //Check for numbers
         Matcher lm = lp.matcher(leingabe);
             
         if(lm.find())
-        {
             leingabe = leingabe.substring(0, lm.start());
-        }
         else
         {
           lp = Pattern.compile("sin\\($|cos\\($|tan\\($");
           lm = lp.matcher(leingabe);
           if(lm.find())
-          {
             leingabe = leingabe.substring(0, lm.start());
-          }  
           else
           {
-            if ((llastchar ==  '+') || (llastchar == '-') || (llastchar == '*') || (llastchar == '/') || (llastchar == ')') || (llastchar == '.') || (llastchar == ')') || (llastchar == '('))
-              leingabe = leingabe.substring(0, leingabe.length()-1);    
+            lm = Pattern.compile("\\+$|-$|\\*$|/$|\\($|\\)$|.$").matcher(leingabe);
+            if (lm.find())
+              leingabe = leingabe.substring(0, lm.start());    
           }             
         } 
         tfInput.setText(leingabe);
@@ -181,9 +181,9 @@ public class View extends JFrame
     public void ButtonClick(ActionEvent aE)
     {
       String lEingabe = aE.getActionCommand();
-      if (lEingabe == "+-")
+      if ("+-".equals(lEingabe))
         lEingabe = "-";
-      if (lEingabe == "sin" || lEingabe == "cos" || lEingabe == "tan")
+      if ("sin".equals(lEingabe) || "cos".equals(lEingabe) || "tan".equals(lEingabe))
           lEingabe = lEingabe + "(";
       tfInput.setText(tfInput.getText() + lEingabe);
     }
@@ -198,6 +198,7 @@ public class View extends JFrame
        tfOutput.setText(aErg);
     }
     
+    //From here link the Actionlisteners with the Components
     public void setBerechnenListener(ActionListener al)
     {
       this.buttonEquals.addActionListener(al);
