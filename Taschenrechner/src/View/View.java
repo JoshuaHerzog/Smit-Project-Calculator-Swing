@@ -31,6 +31,8 @@ public class View extends JFrame
         JPanel pnlMidButtons = new JPanel(glMidButtons);
         JPanel pnlBotButtons = new JPanel(glBotButtons);
         
+        JTextField tfInput = new JTextField();
+        JTextField tfOutput = new JTextField();
         JButton button0 = new JButton();
         JButton button1 = new JButton();
         JButton button2 = new JButton();
@@ -63,8 +65,9 @@ public class View extends JFrame
     private void InitForm()
     {
         this.setSize(450, 600);
-        pnlTop.add(new JTextField());
-        pnlTop.add(new JTextField());   
+        pnlTop.add(tfInput);
+        pnlTop.add(tfOutput);
+        tfOutput.setEditable(false);
         
         InitializeButtons();
         PlaceButtonsOnPanels();
