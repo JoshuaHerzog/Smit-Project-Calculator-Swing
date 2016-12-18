@@ -13,108 +13,87 @@ import java.util.*;
  */
 public class Model 
 {
-    private double winkelberechnung(String input){
-        char funktion = input.charAt(0);
-        input = input.substring(2, input.length()-1);
-        double parsed_input = Berechne(input);
-        
-        System.out.println("Winkel input ist -> " + parsed_input + "<");
-        // double winkel = Math.sin(parsed_input);
-       double winkel = 0.0;
-        switch(funktion){
-            case 's':
-                winkel = Math.sin(Math.toRadians(parsed_input));
-                break;
-            case 'c':
-                winkel = Math.cos(Math.toRadians(parsed_input));
-                break;
-            case 't':
-                winkel = Math.tan(Math.toRadians(parsed_input));
-                break;
-            default:
-                winkel = 42.0;
+    public String Berechne(String astr) {
+    String str = astr;
+    return Double.toString(new Object() {
+        int pos = -1, ch;
+
+        void nextChar() {
+            ch = (++pos < str.length()) ? str.charAt(pos) : -1;
         }
-       
-        return winkel;
-    } 
-    public double Berechne(String astr)
-    {
-       //Input vorbereiten
-       //Operatoren mit mehreren zeichen dur einzelne zeichen ersetzten
-       String rechnung = "0+"+astr.replace("sin", "s").replace("cos","c").replace("tan","t") + "#";
-       double ergebnis = 0.0;
 
-        // Durchlaufe den String Zeichen fuer Zeichen
-        String number_buffer = "";
-        String operator_buffer = "";
-        String special_operator = "";
-        Double zwischenergebnis = 0.0;
-        Double teil_1 = 0.0; 
-            try {
-                for (int i = 0; i < rechnung.length(); i++){
-                    char zeichen = rechnung.charAt(i);
-                    //System.out.println(zeichen);
-                    if(zeichen >= '0' && zeichen <= '9')
-                    {
-                        number_buffer += zeichen;
-                    }
-                    else
-                    {
-
-                        if (operator_buffer == "" && (zeichen != 's'&& zeichen != 'c'&& zeichen != 't')){
-                         teil_1 = Double.parseDouble(number_buffer);
-                         number_buffer = "";
-                         operator_buffer += zeichen;
-                        }
-                        else
-                        {
-                            System.out.println("DAS STEHT IN ZEICHEN ->" + zeichen);
-                            if(zeichen == 's' || zeichen == 'c' || zeichen == 't'){
-                               String input = rechnung.substring(i,rechnung.indexOf(")")+1);
-
-                               //String sub_input = input.substring( 2, input.indexOf(")") );
-                               double winkel = winkelberechnung(input);
-                               System.out.println("Winkel ist -> " + winkel + " <");
-                               number_buffer = Double.toString(winkel);
-                               rechnung = rechnung.substring(0,i) + winkel + rechnung.substring(rechnung.indexOf(")")+1,rechnung.length());
-                               System.out.println("Rechnungs string ist -> " + rechnung);
-                            }
-                            switch(operator_buffer)
-                            {
-                                case "+": zwischenergebnis = teil_1 + Double.parseDouble(number_buffer);
-                                    System.out.println("Rechne" + teil_1 + "+" + number_buffer);
-                                    break;
-                                case "-": zwischenergebnis = teil_1 - Double.parseDouble(number_buffer);
-                                    System.out.println("Rechne" + teil_1 + "-" + number_buffer);
-                                    break;
-                                case "*": zwischenergebnis = teil_1 * Double.parseDouble(number_buffer);
-                                    System.out.println("Rechne" + teil_1 + "*" + number_buffer);
-                                    break;
-                                case "/": zwischenergebnis = teil_1 / Double.parseDouble(number_buffer);
-                                    System.out.println("Rechne" + teil_1 + "/" + number_buffer);
-                                    break;
-                                default:
-                                    System.out.println("Default case -> " + operator_buffer);
-                                    break;
-                           }
-                           teil_1 = zwischenergebnis;
-                           number_buffer = "";
-                           operator_buffer = ""+zeichen;  
-                        }
-                    }
-                }
-                if(ergebnis == 0.0){
-                    ergebnis = teil_1;
-                }
-                System.out.println("ERGEBNIS: " + ergebnis);
+        //Diese funktion hat hunger
+        boolean eat(int charToEat) {
+            while (ch == ' ') nextChar();
+            if (ch == charToEat) {
+                nextChar();
+                return true;
+            }
+            return false;
         }
-        catch(NumberFormatException e)
-        {
-            System.out.println("Ungültige rechnung");
-        } 
-        return ergebnis;
 
-    }
+        double parse() {
+            nextChar();
+            double x = parseExpression();
+            if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
+            return x;
+        }
+
+        // Grammar:
+        // expression = term | expression `+` term | expression `-` term
+        // term = factor | term `*` factor | term `/` factor
+        // factor = `+` factor | `-` factor | `(` expression `)`
+        //        | number | functionName factor | factor `^` factor
+
+        double parseExpression() {
+            double x = parseTerm();
+            for (;;) {
+                if      (eat('+')) x += parseTerm(); // addition
+                else if (eat('-')) x -= parseTerm(); // subtraction
+                else return x;
+            }
+        }
+
+        double parseTerm() {
+            double x = parseFactor();
+            for (;;) {
+                if      (eat('*')) x *= parseFactor(); // multiplication
+                else if (eat('/')) x /= parseFactor(); // division
+                else return x;
+            }
+        }
+
+        double parseFactor() {
+            if (eat('+')) return parseFactor(); // unary plus
+            if (eat('-')) return -parseFactor(); // unary minus
+
+            double x;
+            int startPos = this.pos;
+            if (eat('(')) { // parentheses
+                x = parseExpression();
+                eat(')');
+            } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
+                while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
+                x = Double.parseDouble(str.substring(startPos, this.pos));
+            } else if (ch >= 'a' && ch <= 'z') { // functions
+                while (ch >= 'a' && ch <= 'z') nextChar();
+                String func = str.substring(startPos, this.pos);
+                x = parseFactor();
+                if (func.equals("sqrt")) x = Math.sqrt(x);
+                else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
+                else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
+                else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
+                else throw new RuntimeException("Unbekannte Funktion: " + func);
+            } else {
+                throw new RuntimeException("Unerwartet: " + (char)ch);
+            }
+
+            if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
+
+            return x;
+        }
+    }.parse());
+}
    
    public void ClearAll()
    {
