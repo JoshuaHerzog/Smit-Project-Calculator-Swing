@@ -8,6 +8,8 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -59,8 +61,7 @@ public class View extends JFrame
         JButton buttonParenthesisClosed = new JButton();
     
     public View()
-    {
-        
+    {   
         InitForm();
     }
     
@@ -73,8 +74,7 @@ public class View extends JFrame
         
         InitializeButtons();
         PlaceButtonsOnPanels();
-        
-        
+         
         this.setLayout(glCalc);
         this.add(pnlTop);
         this.add(pnlMidButtons);
@@ -143,46 +143,98 @@ public class View extends JFrame
     
     public void ResetEingabe()
     {
-        
+      tfInput.setText("");
+      tfOutput.setText("");
     }
     
     public void DeleteLastCharacter()
     {
-      JOptionPane.showMessageDialog(null, "Test", "Test Titel", JOptionPane.OK_CANCEL_OPTION);      
-    }
+      String leingabe = tfInput.getText();
+      if (!leingabe.isEmpty())
+      {
+        char llastchar = leingabe.charAt(leingabe.length()-1);   
+        Pattern lp = Pattern.compile("\\d$"); //Check for numbers
+        Matcher lm = lp.matcher(leingabe);
+            
+        if(lm.find())
+        {
+            leingabe = leingabe.substring(0, lm.start());
+        }
+        else
+        {
+          lp = Pattern.compile("sin\\($|cos\\($|tan\\($");
+          lm = lp.matcher(leingabe);
+          if(lm.find())
+          {
+            leingabe = leingabe.substring(0, lm.start());
+          }  
+          else
+          {
+            if ((llastchar ==  '+') || (llastchar == '-') || (llastchar == '*') || (llastchar == '/') || (llastchar == ')') || (llastchar == '.') || (llastchar == ')') || (llastchar == '('))
+              leingabe = leingabe.substring(0, leingabe.length()-1);    
+          }             
+        } 
+        tfInput.setText(leingabe);
+      }
+     }
     
     public void ButtonClick(ActionEvent aE)
     {
-        
+      String lEingabe = aE.getActionCommand();
+      if (lEingabe == "+-")
+        lEingabe = "-";
+      if (lEingabe == "sin" || lEingabe == "cos" || lEingabe == "tan")
+          lEingabe = lEingabe + "(";
+      tfInput.setText(tfInput.getText() + lEingabe);
     }
     
     public String getEingabe()
     {
-        return "";
+        return tfInput.getText();
     }
     
-    public void SetErgebnis(String ferg)
+    public void SetErgebnis(String aErg)
     {
-        
+       tfOutput.setText(aErg);
     }
     
-    public void setBerechnenListener(ActionListener fl)
+    public void setBerechnenListener(ActionListener al)
     {
-        
+      this.buttonEquals.addActionListener(al);
     }
     
-    public void setResetListener(ActionListener fl)
+    public void setResetListener(ActionListener al)
     {
-        
+      this.buttonClearAll.addActionListener(al);
     }
     
-    public void setButtonClickListener(ActionListener fl)
+    public void setButtonClickListener(ActionListener al)
     {
-        
+      this.button0.addActionListener(al);
+      this.button1.addActionListener(al);
+      this.button2.addActionListener(al);
+      this.button3.addActionListener(al);
+      this.button4.addActionListener(al);
+      this.button5.addActionListener(al);
+      this.button6.addActionListener(al);
+      this.button7.addActionListener(al);
+      this.button8.addActionListener(al);
+      this.button9.addActionListener(al);
+      this.buttonCosinus.addActionListener(al);
+      this.buttonDivide.addActionListener(al);
+      this.buttonInvert.addActionListener(al);
+      this.buttonMultiply.addActionListener(al);
+      this.buttonPoint.addActionListener(al);
+      this.buttonSinus.addActionListener(al);
+      this.buttonSubtract.addActionListener(al);
+      this.buttonTangens.addActionListener(al);
+      this.buttonAdd.addActionListener(al);
+      this.buttonParenthesisClosed.addActionListener(al);
+      this.buttonParenthesisOpen.addActionListener(al);
     }
     
-    public void setDeleteListener(ActionListener fl)
+    public void setDeleteListener(ActionListener al)
     {
-        
+      this.buttonBackspace.addActionListener(al);
     }
 }
