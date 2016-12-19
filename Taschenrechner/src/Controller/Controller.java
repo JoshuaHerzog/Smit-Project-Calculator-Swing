@@ -81,11 +81,6 @@ public class Controller
       public void actionPerformed(ActionEvent aE)
       {
           fView.ResetEingabe();
-          fModel.ClearAll();
       }     
    }
-   
-   
-   
-   
 }
