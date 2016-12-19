@@ -72,6 +72,8 @@ public class View extends JFrame
     private void InitForm()
     {
         this.setSize(450, 600);
+        tfInput.setFont(new Font("Arial", 1, 28));
+        tfOutput.setFont(new Font("Arial", 1, 28));
         pnlTop.add(tfInput);
         pnlTop.add(tfOutput);
         tfOutput.setEditable(false);
